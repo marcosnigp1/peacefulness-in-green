@@ -2,6 +2,7 @@
 
 //Some material used:
 //Mouse constraints: https://www.youtube.com/watch?v=W-ou_sVlTWk
+//Compound bodies code from: https://www.youtube.com/watch?v=DR-iMDhUa-0
 
 // MOVE MOST THINGS FROM HERE TO CLASSES.
 
@@ -28,56 +29,14 @@ let runner;
 //The bodies of Matter.js
 let circles = [];
 
-//Compound bodies code from: https://www.youtube.com/watch?v=DR-iMDhUa-0
-
-//Cup and its walls.
-let cup;
-let left_wall;
-let right_wall;
-
-let wall_options = {
-  isStatic: false,
-  render: {
-    fillStyle: "black",
-    strokeStyle: "black",
-    lineWidth: 10,
-    angle: 0,
-  },
-};
-
-//Floor.
-let floor;
-let floor_options = {
-  isStatic: false,
-  render: {
-    fillStyle: "black",
-    strokeStyle: "black",
-    lineWidth: 10,
-    angle: 0,
-  },
-};
+//Cup.
+let the_cup;
 
 //Bench.
 let bench;
-let bench_options = {
-  isStatic: true,
-  render: {
-    fillStyle: "orange",
-    strokeStyle: "orange",
-    lineWidth: 30,
-  },
-};
 
-//Grass.
+//Grass (or floor).
 let grass;
-let grass_options = {
-  isStatic: true,
-  render: {
-    fillStyle: "green",
-    strokeStyle: "green",
-    lineWidth: 30,
-  },
-};
 
 // -----------------------------------------
 
@@ -113,31 +72,22 @@ function setup() {
   //Prepare bodies to show here...
 
   //--------- The Cup ---------------
-  left_wall = Bodies.rectangle(370, 50, 5, 100, wall_options);
-  right_wall = Bodies.rectangle(410, 50, 5, 100, wall_options);
-  floor = Bodies.rectangle(390, 100, 55, 5, floor_options);
 
-  //Put cup pieces together into one body.
-  cup = Body.create({
-    parts: [floor, left_wall, right_wall],
-    friction: 0.2,
-    frictionAir: 0.1,
-    render: {
-      fillStyle: "black",
-    },
-  });
+  //Create cup with the pieces together.
+  the_cup = new Cup(50, 50, 5, 60);
+
   //---------------------------------
 
   //----- The bench ---------
-  bench = Bodies.rectangle(500, 450, 300, 20, bench_options);
+  bench = new Bench(500, 450, 300, 20);
   //-------------------------
 
   //----- The floor ---------
-  grass = Bodies.rectangle(300, 585, 1000, 40, grass_options);
+  grass = new Grass(0, 580, 3000, 40);
   //-------------------------
 
   //Add everything created so far into the engine, and run it.
-  Composite.add(engine.world, [cup, bench, grass, mConstraint]);
+  Composite.add(engine.world, [mConstraint]);
   Runner.run(runner, engine);
 
   //This is for the events on collision.
@@ -148,59 +98,17 @@ function draw() {
   push();
   background(255);
   pop();
+
   Engine.update(engine); //Avoid items clipping through boundaries.
 
   //Draw cup.
-  push();
-  fill(0);
-  rotate(left_wall.angle);
-  rectMode(CENTER);
-  rect(left_wall.position.x, left_wall.position.y, 5, 100);
-  pop();
+  the_cup.show();
 
-  push();
-  fill(0);
-  rotate(right_wall.angle);
-  rectMode(CENTER);
-  rect(right_wall.position.x, right_wall.position.y, 5, 100);
-  pop();
+  //Draw grass
+  grass.show();
 
-  push();
-  fill(0);
-  rotate(floor.angle);
-  rectMode(CENTER);
-  rect(floor.position.x, floor.position.y, 55, 5);
-  pop();
-
-  //Draw bench
-  push();
-  noStroke();
-  fill(255, 165, 0);
-  rectMode(CENTER);
-  rect(bench.position.x, bench.position.y, 300, 20);
-  pop();
-
-  //Draw left leg
-  push();
-  noStroke();
-  fill(225, 135, 0);
-  rect(360, 460, 20, 110);
-  pop();
-
-  //Draw right leg
-  push();
-  noStroke();
-  fill(225, 135, 0);
-  rect(615, 460, 20, 110);
-  pop();
-
-  //Floor
-  push();
-  noStroke();
-  fill(50, 165, 0);
-  rectMode(CENTER);
-  rect(grass.position.x, grass.position.y, 1000, 40);
-  pop();
+  //Draw bench.
+  bench.show();
 
   //Draw circles.
   for (let i = 0; i < circles.length; i++) {
