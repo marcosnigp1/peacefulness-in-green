@@ -3,6 +3,7 @@
 //Some material used:
 //Mouse constraints: https://www.youtube.com/watch?v=W-ou_sVlTWk
 //Compound bodies code from: https://www.youtube.com/watch?v=DR-iMDhUa-0
+//Show trails: https://www.youtube.com/watch?v=vqE8DMfOajk
 
 // MOVE MOST THINGS FROM HERE TO CLASSES.
 
@@ -40,6 +41,15 @@ let grass;
 
 // -----------------------------------------
 
+// ------ Perlin Movement related variables ---------
+
+let walker = [];
+let random_number;
+let seed1 = 30; //Helps in choosing the color pattern
+let seed2 = 30; //Helps in choosing the color pattern
+
+// -----------------------------------------------------
+
 // ----------- Media related variables ----------
 let img_bg;
 // ----------------------------------------------
@@ -74,7 +84,7 @@ function setup() {
   //--------- The Cup ---------------
 
   //Create cup with the pieces together.
-  the_cup = new Cup(50, 50, 5, 60);
+  the_cup = new Cup(350, 50, 5, 60);
 
   //---------------------------------
 
@@ -96,8 +106,10 @@ function setup() {
 
 function draw() {
   push();
-  background(255);
+  background(img_bg, 180);
   pop();
+
+  // -------------- Check for Matter.js bodies. -------------------------
 
   Engine.update(engine); //Avoid items clipping through boundaries.
 
@@ -120,7 +132,37 @@ function draw() {
       circles.splice(i, 1);
       i--; //This fixes the flickering in the code.
     }
+
+    if (circles[i].isOnDirt()) {
+      circles[i].change();
+      circles[i].spawnPerlinWalker();
+    }
   }
+
+  // ------------------------------------------------------------
+
+  // ------------------- Check for perlin walkers ----------------
+
+  //Draw a new number to check if the walkers should expand or narrow.
+  random_number = int(random(0, 100));
+  seed1 += 0.01;
+  seed2 += 0.02;
+
+  for (let i = 0; i < walker.length; i++) {
+    //Show walker first.
+    walker[i].show();
+
+    //Move walker upwards until it reaches its Y limit.
+    if (walker[i].position.y > walker[i].y_limit) {
+      walker[i].position.y -= 1;
+      walker[i].move();
+    }
+
+    //Increase walker.
+    walker[i].lastposition = walker[i].position.y;
+  }
+
+  // -------------------------------------------------------------
 }
 
 function keyPressed() {

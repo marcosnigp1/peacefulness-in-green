@@ -13,7 +13,7 @@ class Cup {
 
     //Prepare cup elements.
     this.left_wall = Bodies.rectangle(
-      x * 0.5,
+      x * 1.02,
       y * 0.7,
       w,
       h * 1.5,
@@ -21,7 +21,7 @@ class Cup {
     );
 
     this.right_wall = Bodies.rectangle(
-      x * 1.7,
+      x * 1.18,
       y * 0.7,
       w,
       h * 1.5,
@@ -50,7 +50,8 @@ class Cup {
     //Get current pos and angles.
     //Left wall.
     push();
-    fill(0);
+    noStroke();
+    fill(0, 0, 200, 100);
     translate(this.left_wall.position.x, this.left_wall.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
@@ -59,7 +60,8 @@ class Cup {
 
     //Right wall.
     push();
-    fill(0);
+    noStroke();
+    fill(0, 0, 200, 100);
     translate(this.right_wall.position.x, this.right_wall.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
@@ -68,11 +70,21 @@ class Cup {
 
     //Floor
     push();
-    fill(0);
+    noStroke();
+    fill(0, 0, 200, 100);
     translate(this.floor.position.x, this.floor.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
     rect(0, 0, this.w * 11, this.h * 0.1); //The X and Y positions need to be zero.
+    pop();
+
+    //Cup background
+    push();
+    noStroke();
+    fill(0, 0, 100, 40);
+    translate(this.body.position.x, this.body.position.y);
+    rotate(this.body.angle);
+    rect(-30, -45, this.w + 55, this.h * 1.3);
     pop();
   }
 }

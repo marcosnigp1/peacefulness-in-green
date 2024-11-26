@@ -4,7 +4,8 @@ class Circle {
       friction: 1.2,
       restitution: 0.5,
     };
-    this.col = 0;
+    this.col = 255;
+    this.walker_spawned = 0; //Avoids spawning multiple walkers on one circle.
     this.r = r; //p5js expects a diameter, not a radius.
     this.body = Bodies.circle(x, y, this.r, options);
     let angle = random(TWO_PI);
@@ -24,6 +25,31 @@ class Circle {
     }
   }
 
+  isOnDirt() {
+    let pos = this.body.position;
+    if (pos.y > height * 0.92) {
+      Body.setStatic(this.body, true);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  spawnPerlinWalker() {
+    if (this.walker_spawned == 0) {
+      this.body.angle = 10;
+      this.walker_spawned = 1;
+      walker.push(
+        new Walker(
+          this.body.position.x,
+          this.body.position.y,
+          10,
+          this.body.angle
+        )
+      );
+    }
+  }
+
   applyForce(force) {
     //Calling Body's applyForce() function
     Body.applyForce(this.body, this.body.position, force);
@@ -34,8 +60,7 @@ class Circle {
   }
 
   change() {
-    this.col = color(random(100, 255));
-    this.r = random(0, 10);
+    this.col = random(200, 255);
   }
 
   show() {
@@ -44,8 +69,8 @@ class Circle {
 
     push();
     stroke(this.col);
-    strokeWeight(2);
-    fill(30, 30, 200);
+    noStroke();
+    fill(255, 150, 200, this.col);
     translate(pos.x, pos.y);
     rotate(angle);
     rectMode(CENTER);

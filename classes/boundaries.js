@@ -12,7 +12,7 @@ class Grass {
   show() {
     push();
     noStroke();
-    fill(0, 200, 0);
+    fill(0, 200, 0, 0);
     translate(this.body.position.x, this.body.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
@@ -40,15 +40,15 @@ class Bench extends Grass {
     //Draw not interactable left leg
     push();
     noStroke();
-    fill(225, 135, 0, 100);
-    rect(360, 460, 20, 110);
+    fill(225, 135, 0);
+    rect(360, 460, 20, 80);
     pop();
 
     //Draw not interactable right leg
     push();
     noStroke();
-    fill(225, 135, 0, 100);
-    rect(615, 460, 20, 110);
+    fill(225, 135, 0);
+    rect(615, 460, 20, 80);
     pop();
   }
 }
