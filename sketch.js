@@ -50,6 +50,12 @@ let seed2 = 30; //Helps in choosing the color pattern
 
 // -----------------------------------------------------
 
+// ---- Celular Automata related variables ------
+
+let cells = [];
+
+// ----------------------------------------------
+
 // ----------- Media related variables ----------
 let img_bg;
 // ----------------------------------------------
@@ -66,7 +72,8 @@ function setup() {
 
   runner = Runner.create();
 
-  //Logic...
+  //Celular automata
+  cells.push(new CelularSpawner(int(random(255)), 35, 0, 0));
 
   //--- Mouse interaction ---.
   let canvas_mouse = Mouse.create(canvas.elt);
@@ -106,7 +113,7 @@ function setup() {
 
 function draw() {
   push();
-  background(img_bg, 180);
+  background(img_bg);
   pop();
 
   // -------------- Check for Matter.js bodies. -------------------------
@@ -163,6 +170,20 @@ function draw() {
   }
 
   // -------------------------------------------------------------
+
+  ///----------- Check for celular automata ----------------------
+
+  //Draw celular automata.
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].draw();
+
+    //Check if it reaches a maximum of 6 repetitions.
+    if (cells[i].y > height && cells[i].repetitions != 6) {
+      GeneratePattern(); ///Simulate scanlines.
+    }
+  }
+
+  //---------------------------------------------------------------
 }
 
 function keyPressed() {
@@ -193,4 +214,16 @@ function handleCollisions(event) {
       bell.play();
     }
   } */
+}
+
+//For celular automata.
+function GeneratePattern() {
+  ///background(0);
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].ruleValue = int(random(255));
+    cells[i].direction = 0;
+    cells[i].prepare();
+    cells[i].y = 0;
+    cells[i].repetitions += 0;
+  }
 }

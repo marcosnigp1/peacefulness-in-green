@@ -11,12 +11,16 @@ html {
   width: 100vw;
   min-width: 400px;
   padding: 60px;
-  background-color: rgb(0, 0, 0);
-  color: white;
+  background-image: url("media/bg_img_web.png");
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 canvas {
-  border: 2px solid rgb(2, 2, 2);
+  border: 2px solid rgb(255, 255, 255);
   width: 100%;
   height: 100px;
 }
