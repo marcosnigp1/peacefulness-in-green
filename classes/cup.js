@@ -46,12 +46,17 @@ class Cup {
     Composite.add(engine.world, this.body);
   }
 
+  applyForce(force) {
+    //Calling Body's applyForce() function
+    Body.applyForce(this.body, this.body.position, force);
+  }
+
   show() {
     //Get current pos and angles.
     //Left wall.
     push();
     noStroke();
-    fill(0, 0, 200, 100);
+    fill(155, 103, 0, 100);
     translate(this.left_wall.position.x, this.left_wall.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
@@ -61,7 +66,7 @@ class Cup {
     //Right wall.
     push();
     noStroke();
-    fill(0, 0, 200, 100);
+    fill(155, 103, 0, 100);
     translate(this.right_wall.position.x, this.right_wall.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
@@ -71,7 +76,7 @@ class Cup {
     //Floor
     push();
     noStroke();
-    fill(0, 0, 200, 100);
+    fill(155, 103, 0, 100);
     translate(this.floor.position.x, this.floor.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
@@ -81,7 +86,7 @@ class Cup {
     //Cup background
     push();
     noStroke();
-    fill(0, 0, 100, 40);
+    fill(155, 103, 0, 100);
     translate(this.body.position.x, this.body.position.y);
     rotate(this.body.angle);
     rect(-30, -45, this.w + 55, this.h * 1.3);

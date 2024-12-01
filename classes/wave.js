@@ -26,7 +26,7 @@ class Wave {
     if (this.direction == 0) {
       for (let i = 0; i < this.angles.length; i++) {
         let y = map(sin(this.angles[i]), -1, 1, -50, 50);
-        strokeWeight(2);
+        strokeWeight(0.5);
         let x = map(i, 0, this.angles.length, -750, 700);
         vertex(x, y);
         this.angles[i] += this.angle_velocity;

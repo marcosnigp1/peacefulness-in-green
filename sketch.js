@@ -30,7 +30,7 @@ let runner;
 let circles = [];
 
 //Cup.
-let the_cup;
+let cups = [];
 
 //Bench.
 let bench;
@@ -97,13 +97,13 @@ function setup() {
   //--------- The Cup ---------------
 
   //Create cup with the pieces together.
-  the_cup = new Cup(360, 50, 5, 60);
+  cups.push(new Cup(360, 50, 5, 60));
 
   //---------------------------------
 
   //--------- The circles ---------------
 
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 5; i++) {
     circles.push(new Circle(400, 60, 5, 60));
   }
 
@@ -131,6 +131,7 @@ function setup() {
   waves.push(new Wave(550, 100, 2, 0.05, 1));
   waves.push(new Wave(550, 250, 2, 0.05, 0));
   waves.push(new Wave(550, 150, 2, 0.05, 1));
+  waves.push(new Wave(550, 350, 2, 0.05, 1));
 }
 
 function draw() {
@@ -142,8 +143,14 @@ function draw() {
 
   Engine.update(engine); //Avoid items clipping through boundaries.
 
-  //Draw cup.
-  the_cup.show();
+  //The cup
+  for (let i = 0; i < cups.length; i++) {
+    if (cups[i].body.position.y < 500) {
+      let force = createVector(0.001, 0.001);
+      cups[i].applyForce(force);
+    }
+    cups[i].show();
+  }
 
   //Draw grass
   grass.show();
@@ -165,6 +172,12 @@ function draw() {
     if (circles[i].isOnDirt()) {
       circles[i].change();
       circles[i].spawnPerlinWalker();
+    }
+
+    //Check if the circles are in the wind area.
+    if (circles[i].body.position.y < 500) {
+      let force = createVector(0.00005, 0.00005);
+      circles[i].applyForce(force);
     }
   }
 
@@ -217,8 +230,16 @@ function draw() {
 
 function keyPressed() {
   if (key == "c" || key == "C") {
-    //Parameters (x, y, r).
-    circles.push(new Circle(mouseX, mouseY, 5));
+    //--------- The Cup ---------------
+    //Create cup with the pieces together.
+    cups.push(new Cup(0, 0, 5, 60));
+    //---------------------------------
+
+    //--------- The circles ---------------
+    for (let i = 0; i < 5; i++) {
+      circles.push(new Circle(0, 0, 5, 60));
+    }
+    //---------------------------------
   }
 }
 
@@ -243,6 +264,26 @@ function handleCollisions(event) {
       bell.play();
     }
   } */
+}
+
+//For testing purposes.
+function keyPressed() {
+  if (key == "c" || key == "C") {
+    //--------- The Cup ---------------
+
+    //Create cup with the pieces together.
+    cups.push(new Cup(360, 50, 5, 60));
+
+    //---------------------------------
+
+    //--------- The circles ---------------
+
+    for (let i = 0; i < 3; i++) {
+      circles.push(new Circle(400, 60, 5, 60));
+    }
+
+    //---------------------------------
+  }
 }
 
 //For celular automata.
