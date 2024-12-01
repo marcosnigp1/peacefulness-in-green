@@ -70,7 +70,7 @@ class Circle {
     push();
     stroke(this.col);
     noStroke();
-    fill(255, 150, 200, this.col);
+    fill(50, 50, 50, this.col);
     translate(pos.x, pos.y);
     rotate(angle);
     rectMode(CENTER);

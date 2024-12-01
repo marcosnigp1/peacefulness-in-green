@@ -4,8 +4,7 @@
 //Mouse constraints: https://www.youtube.com/watch?v=W-ou_sVlTWk
 //Compound bodies code from: https://www.youtube.com/watch?v=DR-iMDhUa-0
 //Show trails: https://www.youtube.com/watch?v=vqE8DMfOajk
-
-// MOVE MOST THINGS FROM HERE TO CLASSES.
+//Sine wave: https://thecodingtrain.com/tracks/the-nature-of-code-2/noc/3-angles/6-graphing-sine-wave
 
 // ------ Physics related variables ------
 
@@ -60,13 +59,20 @@ let cells = [];
 let img_bg;
 // ----------------------------------------------
 
+// ------ Sine wave related variables ------
+let waves = [];
+
+// ----------------------------------------------
+
 function preload() {
   img_bg = loadImage("media/bliss.jpg");
+  audio_bg = loadSound("media/audio_bg.mp3"); //Source: https://pixabay.com/sound-effects/highland-winds-fx-56245/
 }
 
 function setup() {
   frameRate(60); //A stable frame rate is better than one that is unpredictable.
   let canvas = createCanvas(800, 600); //Not sure if it will have fixed values or it will be responsive.
+  audio_bg.loop();
   engine = Engine.create();
   engine.gravity = Vector.create(0, 1);
 
@@ -91,7 +97,15 @@ function setup() {
   //--------- The Cup ---------------
 
   //Create cup with the pieces together.
-  the_cup = new Cup(350, 50, 5, 60);
+  the_cup = new Cup(360, 50, 5, 60);
+
+  //---------------------------------
+
+  //--------- The circles ---------------
+
+  for (let i = 0; i < 25; i++) {
+    circles.push(new Circle(400, 60, 5, 60));
+  }
 
   //---------------------------------
 
@@ -109,6 +123,14 @@ function setup() {
 
   //This is for the events on collision.
   //Matter.Events.on(engine, "collisionStart", handleCollisions);
+
+  //--------- Sine wave ---------------
+  //Parameters: (position X, position Y, R, Angle Velocity, Direction).
+  waves.push(new Wave(150, 50, 2, 0.05, 0));
+  waves.push(new Wave(650, 80, 2, 0.05, 0));
+  waves.push(new Wave(550, 100, 2, 0.05, 1));
+  waves.push(new Wave(550, 250, 2, 0.05, 0));
+  waves.push(new Wave(550, 150, 2, 0.05, 1));
 }
 
 function draw() {
@@ -116,7 +138,7 @@ function draw() {
   background(img_bg);
   pop();
 
-  // -------------- Check for Matter.js bodies. -------------------------
+  // -------------- Matter.js bodies. -------------------------
 
   Engine.update(engine); //Avoid items clipping through boundaries.
 
@@ -148,7 +170,7 @@ function draw() {
 
   // ------------------------------------------------------------
 
-  // ------------------- Check for perlin walkers ----------------
+  // ------------------- Perlin walkers ----------------
 
   //Draw a new number to check if the walkers should expand or narrow.
   random_number = int(random(0, 100));
@@ -171,7 +193,7 @@ function draw() {
 
   // -------------------------------------------------------------
 
-  ///----------- Check for celular automata ----------------------
+  ///----------- Celular automata ----------------------
 
   //Draw celular automata.
   for (let i = 0; i < cells.length; i++) {
@@ -181,6 +203,13 @@ function draw() {
     if (cells[i].y > height && cells[i].repetitions != 6) {
       GeneratePattern(); ///Simulate scanlines.
     }
+  }
+
+  //---------------------------------------------------------------
+
+  // -------------- Sine wave. -------------------------
+  for (let i = 0; i < waves.length; i++) {
+    waves[i].show();
   }
 
   //---------------------------------------------------------------
