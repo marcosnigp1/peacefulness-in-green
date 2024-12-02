@@ -16,13 +16,14 @@ class UI {
 
     //Text.
     push();
-    fill(0);
-    stroke(255);
-    textSize(20);
+    fill(255);
+    stroke(0);
+    textSize(18);
+    textAlign(CENTER);
     text(
-      "I feel happy when CUPS fall of the sky.\nThey bring SEEDS for my HAND and planet's joy.",
-      230,
-      50
+      "I feel happy when CUPS fall of the sky.\nThey bring SEEDS for my HAND and planet's joy.\n\nPlease, use your HAND to grab things.",
+      400,
+      40
     );
     pop();
   }
