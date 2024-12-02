@@ -65,6 +65,7 @@ let audio_bg;
 let leg_1_img;
 let leg_2_img;
 let top_img;
+let restart_icon;
 
 //Sounds
 let glasshit_1; //Different glass hit sound variations, since heavier objects would sound louder.
@@ -89,6 +90,11 @@ let spawn_1;
 let spawn_2;
 // ----------------------------------------------
 
+// ------- User Interface related variables -------
+let ui;
+
+// ----------------------------------------------
+
 function preload() {
   //Images
   ant_img = loadImage("media/ant.png");
@@ -96,6 +102,7 @@ function preload() {
   leg_1_img = loadImage("media/leg.png");
   leg_2_img = loadImage("media/leg2.png");
   top_img = loadImage("media/top.png");
+  restart_icon = loadImage("media/restart_icon.png");
 
   //Sounds
   audio_bg = loadSound("media/audio_bg.mp3"); //Source: https://pixabay.com/sound-effects/highland-winds-fx-56245/
@@ -116,7 +123,11 @@ function setup() {
 
   runner = Runner.create();
 
-  //-- Autonomous agents ----
+  //--------- UI -----------
+  ui = new UI(30, 30, 60, 60);
+  //----------------------------------
+
+  //--------- Autonomous agents -----------
 
   //Preparing the ants variable.
   ants_1.push(new Ant(2, 520));
@@ -128,7 +139,7 @@ function setup() {
   target_1 = new Target(890, 550);
   target_2 = new Target(-90, 550);
 
-  //-----------------------
+  //--------------------------------------
 
   //Celular automata
   cells.push(new CelularSpawner(int(random(255)), 35, 0, 0));
@@ -191,6 +202,10 @@ function draw() {
   push();
   background(img_bg);
   pop();
+
+  //--------- User interface  -----------//
+  ui.show();
+  //-------------------------------------//
 
   // ----- Autonomous agents -----------
 
@@ -440,35 +455,50 @@ function randomSpawnOfCups() {
   }
 }
 
+function mousePressed() {
+  if (
+    mouseX > ui.position.x &&
+    mouseX < ui.position.x + ui.w &&
+    mouseY > ui.position.y &&
+    mouseY < ui.position.y + ui.h
+  ) {
+    initializeReset();
+  }
+}
+
 //For testing purposes.
 function keyPressed() {
   if (key == "c" || key == "C") {
-    //-------- Remove Matter.js bodies from existence ------
-    for (let i = 0; i < cups.length; i++) {
-      cups[i].removeFromWorld();
-    }
-
-    for (let i = 0; i < circles.length; i++) {
-      circles[i].removeFromWorld();
-    }
-
-    walker = [];
-    cups = [];
-    circles = [];
-
-    //--------- Reset all the values. ---------------
-
-    //And then summon one cup with seeds.
-
-    //Create cup with the pieces together.
-    cups.push(new Cup(360, 50, 5, 60));
-
-    let random_number = int(random(1, 5));
-    for (let i = 0; i < random_number; i++) {
-      circles.push(new Circle(400, 60, 5, 60));
-    }
-    //---------------------------------
+    initializeReset();
   }
+}
+
+function initializeReset() {
+  //-------- Remove Matter.js bodies from existence ------
+  for (let i = 0; i < cups.length; i++) {
+    cups[i].removeFromWorld();
+  }
+
+  for (let i = 0; i < circles.length; i++) {
+    circles[i].removeFromWorld();
+  }
+
+  walker = [];
+  cups = [];
+  circles = [];
+
+  //--------- Reset all the values. ---------------
+
+  //And then summon one cup with seeds.
+
+  //Create cup with the pieces together.
+  cups.push(new Cup(360, 50, 5, 60));
+
+  let random_number = int(random(1, 5));
+  for (let i = 0; i < random_number; i++) {
+    circles.push(new Circle(400, 60, 5, 60));
+  }
+  //---------------------------------
 }
 
 //For celular automata.
