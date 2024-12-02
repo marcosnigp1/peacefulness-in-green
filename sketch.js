@@ -115,7 +115,7 @@ function preload() {
 }
 
 function setup() {
-  frameRate(60); //A stable frame rate is better than one that is unpredictable.
+  frameRate(60); //A stable frame rate is better than one that is unpredictable. Thus, above 60 fps will make everything go too fast.
   let canvas = createCanvas(800, 600); //Not sure if it will have fixed values or it will be responsive.
   audio_bg.loop();
   engine = Engine.create();
@@ -400,11 +400,11 @@ function handleCollisions(event) {
     let particleA = bodyA.plugin.particle;
     let particleB = bodyB.plugin.particle;
 
-    //Some of them were disabled because were causing audio glitches, mostly due to overlapping.
-
     if (particleA instanceof Cup && particleB instanceof Cup) {
       glasshit_1.play();
     }
+
+    //Some of them were disabled because were causing audio glitches, mostly due to overlapping.
 
     /*     if (particleA instanceof Cup && particleB instanceof Circle) {
       glasshit_2.play();
