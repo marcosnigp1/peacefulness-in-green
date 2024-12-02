@@ -30,10 +30,6 @@ class Walker {
       ellipse(pos.x, pos.y, this.w);
       noStroke();
       fill(0, 200, 0);
-      /* fill(
-        map(noise(seed1), 0, 1, 0, width),
-        map(noise(seed2), 0, 1, 0, height),
-        map(noise(seed1 + seed2), 0, 1, 0, seed1 + seed2)) Commented since it is not required at the moment. It also looks wrong. */
     }
     pop();
   }
@@ -47,7 +43,6 @@ class Walker {
       this.position.x - 10,
       this.position.x + 10
     );
-    /* this.position.y = map(noise(this.ty), 0, 1, this.lastposition, 0); */
     this.tx += 0.1;
   }
 }
