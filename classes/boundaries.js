@@ -6,6 +6,7 @@ class Grass {
     this.w = w;
     this.h = h;
     this.body = Bodies.rectangle(x, y, w, h, this.options);
+    this.body.plugin.particle = this; //Associated with collisions events.
     Composite.add(engine.world, this.body);
   }
 

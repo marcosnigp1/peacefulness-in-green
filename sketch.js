@@ -59,6 +59,12 @@ let cells = [];
 let img_bg;
 let ant_img;
 let audio_bg;
+let glasshit_1; //Different glass hit sound variations, since heavier objects would sound louder.
+let glasshit_2;
+let dirt;
+let pebbleonpebble;
+let wood_1; //Different wood sound variations, since heavier objects would sound louder.
+let wood_2;
 // ----------------------------------------------
 
 // ------ Sine wave related variables ------
@@ -79,6 +85,12 @@ function preload() {
   ant_img = loadImage("media/ant.png");
   img_bg = loadImage("media/bliss.jpg");
   audio_bg = loadSound("media/audio_bg.mp3"); //Source: https://pixabay.com/sound-effects/highland-winds-fx-56245/
+  glasshit_1 = loadSound("media/glasshit.mp3"); //Source: https://pixabay.com/sound-effects/glass-knock-1-189096/
+  glasshit_2 = loadSound("media/glasshit.mp3"); //Source: https://pixabay.com/sound-effects/glass-knock-1-189096/
+  dirt = loadSound("media/dirt.mp3"); //Source: https://pixabay.com/sound-effects/single-rock-hit-dirt-2-83898/
+  wood_1 = loadSound("media/wood.mp3"); //Source: https://pixabay.com/sound-effects/wood-step-sample-1-47664/
+  wood_2 = loadSound("media/wood.mp3"); //Source: https://pixabay.com/sound-effects/wood-step-sample-1-47664/
+  pebbleonpebble = loadSound("media/pebbleonpebble.mp3"); //Source: https://pixabay.com/sound-effects/single-rock-hitting-wood-4-103705/
 }
 
 function setup() {
@@ -148,7 +160,7 @@ function setup() {
   Runner.run(runner, engine);
 
   //This is for the events on collision.
-  //Matter.Events.on(engine, "collisionStart", handleCollisions);
+  Matter.Events.on(engine, "collisionStart", handleCollisions);
 
   //--------- Sine wave ---------------
   //Parameters: (position X, position Y, R, Angle Velocity, Direction).
@@ -227,7 +239,6 @@ function draw() {
       }
     }
 
-    print("I crashed.");
     ants_2[i].update();
   }
 
@@ -341,8 +352,7 @@ function keyPressed() {
 }
 
 function handleCollisions(event) {
-  //Not yet used.
-  /*   for (let pair of event.pairs) {
+  for (let pair of event.pairs) {
     let bodyA = pair.bodyA;
     let bodyB = pair.bodyB;
 
@@ -350,17 +360,36 @@ function handleCollisions(event) {
     let particleA = bodyA.plugin.particle;
     let particleB = bodyB.plugin.particle;
 
-    if (particleA instanceof Circle && particleB instanceof Circle) {
-      particleA.change();
-      particleB.change();
+    if (particleA instanceof Cup && particleB instanceof Cup) {
+      glasshit_1.play();
     }
 
-    if (particleA instanceof Boundary && particleB instanceof Circle) {
-      particleA.change();
-      particleB.change();
-      bell.play();
+    if (particleA instanceof Cup && particleB instanceof Circle) {
+      glasshit_2.play();
+      glasshit_2.setVolume(0.1);
     }
-  } */
+
+    if (particleA instanceof Circle && particleB instanceof Circle) {
+      pebbleonpebble.play();
+    }
+
+    if (particleA instanceof Cup && particleB instanceof Bench) {
+      wood_1.play();
+    }
+
+    if (particleA instanceof Circle && particleB instanceof Bench) {
+      wood_2.play();
+      wood_2.setVolume(0.2);
+    }
+
+    if (particleA instanceof Cup && particleB instanceof Grass) {
+      dirt.play();
+    }
+
+    if (particleA instanceof Circle && particleB instanceof Grass) {
+      dirt.play();
+    }
+  }
 }
 
 //For testing purposes.
