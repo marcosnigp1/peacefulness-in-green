@@ -466,12 +466,24 @@ function mousePressed() {
   }
 }
 
-//For testing purposes.
-function keyPressed() {
-  if (key == "c" || key == "C") {
+//Code for mobile devices.
+function touchStarted() {
+  if (
+    mouseX > ui.position.x &&
+    mouseX < ui.position.x + ui.w &&
+    mouseY > ui.position.y &&
+    mouseY < ui.position.y + ui.h
+  ) {
     initializeReset();
   }
 }
+
+//For testing purposes.
+/* function keyPressed() {
+  if (key == "c" || key == "C") {
+    initializeReset();
+  }
+} */
 
 function initializeReset() {
   //-------- Remove Matter.js bodies from existence ------
