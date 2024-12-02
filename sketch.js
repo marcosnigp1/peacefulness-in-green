@@ -5,6 +5,7 @@
 //Compound bodies code from: https://www.youtube.com/watch?v=DR-iMDhUa-0
 //Show trails: https://www.youtube.com/watch?v=vqE8DMfOajk
 //Sine wave: https://thecodingtrain.com/tracks/the-nature-of-code-2/noc/3-angles/6-graphing-sine-wave
+//Change mouse cursor: https://p5js.org/reference/p5/cursor/
 
 // ------ Physics related variables ------
 
@@ -347,7 +348,18 @@ function draw() {
     waves[i].show();
   }
   //---------------------------------------------------------------
+
+  //Spawn, randomly, a new cup with seeds.
+  randomSpawnOfCups();
+
+  // -------------- Mouse cursor. -------------------------
+  if (mouseIsPressed === true) {
+    cursor("media/closedhand.png", 10, 8); //source: https://icon-icons.com/icon/open-hand-cursor/100161
+  } else {
+    cursor("media/openhand.png", 10, 8); //source: https://icon-icons.com/icon/closed-hand-cursor/100189
+  }
 }
+//---------------------------------------------------------------
 
 function keyPressed() {
   if (key == "c" || key == "C") {
@@ -373,18 +385,20 @@ function handleCollisions(event) {
     let particleA = bodyA.plugin.particle;
     let particleB = bodyB.plugin.particle;
 
+    //Some of them were disabled because were causing audio glitches, mostly due to overlapping.
+
     if (particleA instanceof Cup && particleB instanceof Cup) {
       glasshit_1.play();
     }
 
-    if (particleA instanceof Cup && particleB instanceof Circle) {
+    /*     if (particleA instanceof Cup && particleB instanceof Circle) {
       glasshit_2.play();
       glasshit_2.setVolume(0.1);
-    }
+    } */
 
-    if (particleA instanceof Circle && particleB instanceof Circle) {
+    /*     if (particleA instanceof Circle && particleB instanceof Circle) {
       pebbleonpebble.play();
-    }
+    } */
 
     if (particleA instanceof Cup && particleB instanceof Bench) {
       wood_1.play();
@@ -405,9 +419,10 @@ function handleCollisions(event) {
   }
 }
 
-//For testing purposes.
-function keyPressed() {
-  if (key == "c" || key == "C") {
+function randomSpawnOfCups() {
+  let random_number = int(random(0, 5000));
+
+  if (random_number == 1) {
     //--------- The Cup ---------------
 
     //Create cup with the pieces together.
@@ -417,10 +432,41 @@ function keyPressed() {
 
     //--------- The circles ---------------
 
-    for (let i = 0; i < 3; i++) {
+    let random_number = int(random(1, 5));
+    for (let i = 0; i < random_number; i++) {
       circles.push(new Circle(400, 60, 5, 60));
     }
+    //---------------------------------
+  }
+}
 
+//For testing purposes.
+function keyPressed() {
+  if (key == "c" || key == "C") {
+    //-------- Remove Matter.js bodies from existence ------
+    for (let i = 0; i < cups.length; i++) {
+      cups[i].removeFromWorld();
+    }
+
+    for (let i = 0; i < circles.length; i++) {
+      circles[i].removeFromWorld();
+    }
+
+    walker = [];
+    cups = [];
+    circles = [];
+
+    //--------- Reset all the values. ---------------
+
+    //And then summon one cup with seeds.
+
+    //Create cup with the pieces together.
+    cups.push(new Cup(360, 50, 5, 60));
+
+    let random_number = int(random(1, 5));
+    for (let i = 0; i < random_number; i++) {
+      circles.push(new Circle(400, 60, 5, 60));
+    }
     //---------------------------------
   }
 }

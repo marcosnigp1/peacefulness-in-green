@@ -56,6 +56,10 @@ class Cup {
     Body.applyForce(this.body, this.body.position, force);
   }
 
+  removeFromWorld() {
+    Composite.remove(engine.world, this.body);
+  }
+
   show() {
     //Get current pos and angles.
     //Left wall.
