@@ -21,7 +21,7 @@ class UI {
     textSize(18);
     textAlign(CENTER);
     text(
-      "I feel happy when CUPS fall of the sky.\nThey bring SEEDS for my HAND and planet's joy.\n\nPlease, use your HAND to grab things.",
+      "I feel happy when CUPS fall of the sky.\nThey bring SEEDS for my HAND and planet's joy.\n\nPlease, use your HAND to grab CUPS and SEEDS.",
       400,
       40
     );

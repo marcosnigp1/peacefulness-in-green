@@ -283,8 +283,8 @@ function draw() {
 
   //The cup
   for (let i = 0; i < cups.length; i++) {
-    if (cups[i].body.position.y < 500) {
-      let force = createVector(0.001, 0.001);
+    if (cups[i].body.position.y < 400) {
+      let force = createVector(0.001, -0.001);
       cups[i].applyForce(force);
     }
     cups[i].show();
@@ -313,8 +313,8 @@ function draw() {
     }
 
     //Check if the circles are in the wind area.
-    if (circles[i].body.position.y < 500) {
-      let force = createVector(0.00005, 0.00005);
+    if (circles[i].body.position.y < 400) {
+      let force = createVector(0.00005, -0.00005);
       circles[i].applyForce(force);
     }
   }
