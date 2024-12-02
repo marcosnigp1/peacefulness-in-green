@@ -56,9 +56,16 @@ let cells = [];
 // ----------------------------------------------
 
 // ----------- media related variables ----------
+
+//Images
 let img_bg;
 let ant_img;
 let audio_bg;
+let leg_1_img;
+let leg_2_img;
+let top_img;
+
+//Sounds
 let glasshit_1; //Different glass hit sound variations, since heavier objects would sound louder.
 let glasshit_2;
 let dirt;
@@ -82,8 +89,14 @@ let spawn_2;
 // ----------------------------------------------
 
 function preload() {
+  //Images
   ant_img = loadImage("media/ant.png");
   img_bg = loadImage("media/bliss.jpg");
+  leg_1_img = loadImage("media/leg.png");
+  leg_2_img = loadImage("media/leg2.png");
+  top_img = loadImage("media/top.png");
+
+  //Sounds
   audio_bg = loadSound("media/audio_bg.mp3"); //Source: https://pixabay.com/sound-effects/highland-winds-fx-56245/
   glasshit_1 = loadSound("media/glasshit.mp3"); //Source: https://pixabay.com/sound-effects/glass-knock-1-189096/
   glasshit_2 = loadSound("media/glasshit.mp3"); //Source: https://pixabay.com/sound-effects/glass-knock-1-189096/

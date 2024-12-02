@@ -31,25 +31,24 @@ class Bench extends Grass {
     //Draw main base.
     push();
     noStroke();
-    fill(150, 75, 0);
+    /* fill(150, 75, 0); */
     translate(this.body.position.x, this.body.position.y);
     rotate(this.body.angle);
     rectMode(CENTER);
-    rect(0, 0, this.w, this.h);
+    image(top_img, -150, -10);
+    /* rect(0, 0, this.w, this.h); */
     pop();
 
     //Draw not interactable left leg
     push();
     noStroke();
-    fill(225, 135, 0);
-    rect(360, 460, 20, 80);
+    image(leg_1_img, 360, 460);
     pop();
 
     //Draw not interactable right leg
     push();
     noStroke();
-    fill(225, 135, 0);
-    rect(615, 460, 20, 80);
+    image(leg_2_img, 615, 460);
     pop();
   }
 }
