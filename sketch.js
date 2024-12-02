@@ -55,16 +55,28 @@ let cells = [];
 
 // ----------------------------------------------
 
-// ----------- Media related variables ----------
+// ----------- media related variables ----------
 let img_bg;
+let ant_img;
+let audio_bg;
 // ----------------------------------------------
 
 // ------ Sine wave related variables ------
 let waves = [];
+// ----------------------------------------------
 
+// ------ Ant related variables --------------
+let ants_1 = [];
+let ants_2 = [];
+let offset = 30; //Avoids the ants from going off screen.
+let target_1;
+let target_2;
+let spawn_1;
+let spawn_2;
 // ----------------------------------------------
 
 function preload() {
+  ant_img = loadImage("media/ant.png");
   img_bg = loadImage("media/bliss.jpg");
   audio_bg = loadSound("media/audio_bg.mp3"); //Source: https://pixabay.com/sound-effects/highland-winds-fx-56245/
 }
@@ -78,10 +90,24 @@ function setup() {
 
   runner = Runner.create();
 
+  //-- Autonomous agents ----
+
+  //Preparing the ants variable.
+  ants_1.push(new Ant(2, 520));
+  ants_2.push(new Ant(600, 520));
+  spawn_1 = new SpawnPoint(0, height / 2);
+  spawn_2 = new SpawnPoint(800, 600);
+
+  //Targets for ants.
+  target_1 = new Target(890, 550);
+  target_2 = new Target(-90, 550);
+
+  //-----------------------
+
   //Celular automata
   cells.push(new CelularSpawner(int(random(255)), 35, 0, 0));
 
-  //--- Mouse interaction ---.
+  //----- Mouse interaction -------
   let canvas_mouse = Mouse.create(canvas.elt);
   canvas_mouse.pixelRatio = pixelDensity(); //Make comfortable when selecting items on the canvas.
 
@@ -132,12 +158,84 @@ function setup() {
   waves.push(new Wave(550, 250, 2, 0.05, 0));
   waves.push(new Wave(550, 150, 2, 0.05, 1));
   waves.push(new Wave(550, 350, 2, 0.05, 1));
+  //----------------------------------
 }
 
 function draw() {
   push();
   background(img_bg);
   pop();
+
+  // ----- Autonomous agents -----------
+
+  //First set of ants.
+  for (let i = 0; i < ants_1.length; i++) {
+    ants_1[i].show();
+
+    //Follow grid
+
+    //Avoid going offscreen.
+    ants_1[i].boundaries(offset);
+    ants_1[i].applyForce(ants_1[i].arrive(target_1.position));
+
+    let d_spawn = p5.Vector.dist(ants_1[i].position, spawn_1.position);
+
+    if (d_spawn > 300 && ants_1[i].spawn_control == 0) {
+      ants_1[i].spawn_control = 1;
+      ants_1.push(new Ant(-60, 550));
+    }
+
+    let d_target = p5.Vector.dist(ants_1[i].position, target_1.position);
+
+    if (d_target < ants_1[i].r + target_1.r) {
+      //This part was done with help of the following material: https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array-in-javascript
+      let index = ants_1.indexOf(ants_1[i]);
+      if (index > -1) {
+        // only splice array when item is found
+        ants_1.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    }
+
+    ants_1[i].update();
+  }
+
+  //Second set of ants.
+  for (let i = 0; i < ants_2.length; i++) {
+    ants_2[i].show();
+
+    //Follow grid
+
+    //Avoid going offscreen.
+    ants_2[i].boundaries(offset);
+    ants_2[i].applyForce(ants_2[i].arrive(target_2.position));
+
+    let d_spawn = p5.Vector.dist(ants_2[i].position, spawn_2.position);
+
+    if (d_spawn > 300 && ants_2[i].spawn_control == 0) {
+      ants_2[i].spawn_control = 1;
+      ants_2.push(new Ant(870, 600));
+    }
+
+    let d_target = p5.Vector.dist(ants_2[i].position, target_2.position);
+
+    if (d_target < ants_2[i].r + target_2.r) {
+      //This part was done with help of the following material: https://stackoverflow.com/questions/5767325/how-can-i-remove-a-specific-item-from-an-array-in-javascript
+      let index = ants_2.indexOf(ants_2[i]);
+      if (index > -1) {
+        // only splice array when item is found
+        ants_2.splice(index, 1); // 2nd parameter means remove one item only
+      }
+    }
+
+    print("I crashed.");
+    ants_2[i].update();
+  }
+
+  //This displays the targets for the ants. It is disabled in case someone wants to see the code and enable it, for their own testing.
+  /*   target_1.show();
+  target_2.show(); */
+
+  // ------------------------------
 
   // -------------- Matter.js bodies. -------------------------
 
@@ -224,7 +322,6 @@ function draw() {
   for (let i = 0; i < waves.length; i++) {
     waves[i].show();
   }
-
   //---------------------------------------------------------------
 }
 
